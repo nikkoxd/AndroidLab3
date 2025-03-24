@@ -1,13 +1,16 @@
 package com.example.lab3
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar.LayoutParams
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class GoalAdapter(private val dataSet: Array<Goal>) : RecyclerView.Adapter<GoalAdapter.ViewHolder>() {
+class GoalAdapter(private val context: Context, private val dataSet: Array<Goal>) : RecyclerView.Adapter<GoalAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val day: TextView = view.findViewById(R.id.day)
         val goalTitle: TextView = view.findViewById(R.id.goal_title)
@@ -17,12 +20,24 @@ class GoalAdapter(private val dataSet: Array<Goal>) : RecyclerView.Adapter<GoalA
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.goal, parent, false)
+        val card: CardView = view.findViewById(R.id.card)
+        val cardLayoutParams = card.layoutParams
+        val scale = context.resources.displayMetrics.density
+
+        view.setOnClickListener {
+            if (cardLayoutParams.height == LayoutParams.WRAP_CONTENT) {
+                cardLayoutParams.height = (310.0 * scale).toInt()
+            } else {
+                cardLayoutParams.height = LayoutParams.WRAP_CONTENT
+            }
+            card.layoutParams = cardLayoutParams
+        }
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.day.text = String.format(dataSet[position].day.toString())
+        holder.day.text = context.getString(R.string.day, dataSet[position].day)
         holder.goalTitle.text = dataSet[position].title
         holder.image.setImageResource(dataSet[position].image)
         holder.description.text = dataSet[position].description
