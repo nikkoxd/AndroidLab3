@@ -1,10 +1,8 @@
 package com.example.lab3
 
-class Goal(
-    private val day: Int,
-    private val title: String,
-    private val description: String,
-    private val image: Int
-) {
-
-}
+data class Goal(
+    val day: Int,
+    val title: String,
+    val description: String,
+    val image: Int
+)
